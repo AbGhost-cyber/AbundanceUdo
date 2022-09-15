@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".feature_bmi.presentation.bmi.BmiDetails">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_30"
+        android:background="@drawable/app_gradient_border"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_40"
+            android:background="@drawable/border_white_53"
+            android:fontFamily="@font/product_sans_regular"
+            android:padding="@dimen/dp_4"
+            android:text="@string/body_mass_index"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white_53"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tvBmiValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_40"
+            android:fontFamily="@font/product_sans_bold"
+            android:text="18.61"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_80" />
+
+        <TextView
+            android:id="@+id/tvNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_30"
+            android:ellipsize="end"
+            android:fontFamily="@font/product_sans_bold"
+            android:maxLines="2"
+            android:text="Hello Olivia, You are normal"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/min_text_size" />
+
+        <TextView
+            android:id="@+id/tvExtraText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_12"
+            android:ellipsize="end"
+            android:fontFamily="@font/product_sans_regular"
+            android:maxLines="2"
+            android:text="Normal BMI range: 18.5kg/m2 - 25kg/m2"
+            android:textAlignment="center"
+            android:textColor="@color/white_80"
+            android:textSize="@dimen/min_text_size" />
+
+        <TextView
+            android:id="@+id/tvPIndex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:ellipsize="end"
+            android:fontFamily="@font/product_sans_regular"
+            android:maxLines="2"
+            android:text="Ponderal Index: 10.64kg/m3"
+            android:textAlignment="center"
+            android:textColor="@color/white_80"
+            android:textSize="@dimen/min_text_size" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
