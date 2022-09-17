@@ -11,6 +11,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.abundanceudo.R
 import com.example.abundanceudo.databinding.ActivityMainBinding
+import com.example.abundanceudo.feature_bmi.presentation.shared_viewmodels.BmiSharedViewModel
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private var appBarConfig: AppBarConfiguration? = null
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel by viewModels<BmiSharedViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        MobileAds.initialize(this)
 
         setSupportActionBar(binding.layoutToolBar)
         val navHostFragment = supportFragmentManager

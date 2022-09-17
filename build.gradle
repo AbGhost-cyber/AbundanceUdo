@@ -6,6 +6,7 @@ buildscript {
         nav_version = "2.5.2"
         lifecycle_version = "2.4.1"
         splash_version = "1.0.0"
+        admob_version = "21.2.0"
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

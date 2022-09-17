@@ -13,13 +13,13 @@ fun getBmiCategory(bmiValue: Double): BmiCategory {
 
 fun BmiCategory.getExtraText(): String {
     return when (this) {
-        is BmiCategory.UnderWeight -> "0.0kg/m2 - 18.4kg/m2"
-        is BmiCategory.Normal -> "18.5kg/m2 - 25kg/m2"
-        is BmiCategory.OverWeight -> "25.1kg/m2 - 40.0kg/m2"
-        is BmiCategory.Obese -> "over 40kg/m2"
+        is BmiCategory.UnderWeight -> "${this.javaClass.simpleName} BMI range: 0.0kg/m2 - 18.4kg/m2"
+        is BmiCategory.Normal -> "${this.javaClass.simpleName} BMI range: 18.5kg/m2 - 25kg/m2"
+        is BmiCategory.OverWeight -> "${this.javaClass.simpleName} BMI range: 25.1kg/m2 - 40.0kg/m2"
+        is BmiCategory.Obese -> "${this.javaClass.simpleName} BMI range: over 40kg/m2"
     }
 }
 
-fun Double.roundToOneDecimal(): Double {
-    return (this * 10.0).roundToInt() / 10.0
+fun Double.roundToTwoDecimal(): Double {
+    return (this * 100.0).roundToInt() / 100.0
 }

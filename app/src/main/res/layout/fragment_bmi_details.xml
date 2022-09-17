@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".feature_bmi.presentation.bmi.BmiDetails">
+    tools:context=".feature_bmi.presentation.bmi_detail.BmiDetails">
 
     <LinearLayout
+        android:id="@+id/layoutStats"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_30"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_35"
         android:background="@drawable/app_gradient_border"
         android:orientation="vertical"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,10 +40,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_40"
             android:fontFamily="@font/product_sans_bold"
-            android:text="18.61"
+            android:text="90.61"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_80" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_2"
+            android:layout_marginStart="@dimen/dp_40"
+            android:layout_marginEnd="@dimen/dp_40"
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/tvNameText"
@@ -81,6 +91,37 @@
             android:textAlignment="center"
             android:textColor="@color/white_80"
             android:textSize="@dimen/min_text_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/defaultMargin"
+            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginEnd="@dimen/defaultMargin"
+            android:layout_marginBottom="@dimen/dp_25"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/shareLayout"
+                layout="@layout/button_layout" />
+
+            <include
+                android:id="@+id/rateLayout"
+                layout="@layout/button_layout" />
+        </LinearLayout>
     </LinearLayout>
+
+    <com.google.android.ads.nativetemplates.TemplateView
+        android:id="@+id/nativeAdView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
+        app:gnt_template_type="@layout/gnt_small_template_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutStats"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

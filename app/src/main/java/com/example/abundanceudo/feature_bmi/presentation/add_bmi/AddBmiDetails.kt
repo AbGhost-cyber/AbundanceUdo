@@ -1,28 +1,36 @@
 package com.example.abundanceudo.feature_bmi.presentation.add_bmi
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.abundanceudo.R
 import com.example.abundanceudo.databinding.FragmentAddBmiDetailsBinding
+import com.example.abundanceudo.feature_bmi.data.repository.AdDismissErrorHandler
+import com.example.abundanceudo.feature_bmi.presentation.shared_viewmodels.AdsViewModel
+import com.example.abundanceudo.feature_bmi.presentation.shared_viewmodels.BmiAdsEvent
+import com.example.abundanceudo.feature_bmi.presentation.shared_viewmodels.BmiSharedViewModel
 import com.example.abundanceudo.feature_bmi.presentation.util.genderData
 import com.example.abundanceudo.feature_bmi.presentation.util.onTextChanged
 import com.example.abundanceudo.feature_bmi.presentation.util.randomRangeData
 import com.example.abundanceudo.feature_bmi.presentation.util.scrollLinearOffset
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class AddBmiDetails : Fragment() {
     private var _binding: FragmentAddBmiDetailsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by activityViewModels<AddBmiViewModel>()
+    private val sharedViewModel by activityViewModels<BmiSharedViewModel>()
+    private val adsViewModel by activityViewModels<AdsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,42 +45,48 @@ class AddBmiDetails : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpViews()
 
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.event.collect {
-                if (it is AddBmiViewModel.UiEvent.SaveNote) {
-                    findNavController().navigate(R.id.action_addBmiDetails_to_bmiDetails)
-                } else if (it is AddBmiViewModel.UiEvent.ShowSnackBar) {
+        sharedViewModel.event.flowWithLifecycle(lifecycle)
+            .onEach {
+                if (it is BmiSharedViewModel.UiEvent.GotoResults) {
+                    Log.d("TAG", "onViewCreated: called ui")
+                    showAd()
+                } else if (it is BmiSharedViewModel.UiEvent.ShowSnackBar) {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+            .launchIn(lifecycleScope)
+
+        adsViewModel.onEvent(
+            BmiAdsEvent.AddFailedOrDismissed(object : AdDismissErrorHandler {
+                override fun onAdDismissOrError() {
+                    findNavController().navigate(AddBmiDetailsDirections.actionAddBmiDetailsToBmiDetails())
+                }
+            })
+        )
+    }
+
+    private fun showAd() {
+        adsViewModel.onEvent(
+            BmiAdsEvent.ShowAd { interstitial ->
+                interstitial.show(requireActivity())
+            }
+        )
     }
 
     private fun setUpViews() {
         binding.btnCalculate.setOnClickListener {
-            viewModel.onEvent(AddBmiDetailEvent.CalculateBmi)
+            sharedViewModel.onEvent(AddBmiDetailEvent.CalculateBmi)
         }
-        binding.tvName.onTextChanged { viewModel.onEvent(AddBmiDetailEvent.EnteredName(it)) }
+        binding.tvName.onTextChanged { sharedViewModel.onEvent(AddBmiDetailEvent.EnteredName(it)) }
 
         val weightPickerAdapter = CommonAdapter { value, view ->
             binding.weightPicker.scrollLinearOffset(requireContext(), view)
-            viewModel.onEvent(AddBmiDetailEvent.SelectedWeight(value.toDouble()))
+            sharedViewModel.onEvent(AddBmiDetailEvent.SelectedWeight(value.toDouble()))
         }
-        // default value is needed in case user clicks on cal button before selecting from picker
-        viewModel.onEvent(
-            AddBmiDetailEvent.SelectedWeight(
-                weightPickerAdapter.getSelectedItem().toDouble()
-            )
-        )
-        viewModel.onEvent(
-            AddBmiDetailEvent.SelectedHeight(
-                weightPickerAdapter.getSelectedItem().toDouble()
-            )
-        )
 
         val heightPickerAdapter = CommonAdapter { value, view ->
             binding.heightPicker.scrollLinearOffset(requireContext(), view)
-            viewModel.onEvent(AddBmiDetailEvent.SelectedHeight(value.toDouble()))
+            sharedViewModel.onEvent(AddBmiDetailEvent.SelectedHeight(value.toDouble()))
         }
         val genderPickerAdapter = CommonAdapter { _, view ->
             binding.genderPicker.scrollLinearOffset(requireContext(), view)
@@ -80,6 +94,22 @@ class AddBmiDetails : Fragment() {
         weightPickerAdapter.differ.submitList(randomRangeData)
         heightPickerAdapter.differ.submitList(randomRangeData)
         genderPickerAdapter.differ.submitList(genderData)
+
+        // default value is needed in case user clicks on cal button before selecting from picker
+        if (weightPickerAdapter.differ.currentList.isNotEmpty()) {
+            sharedViewModel.onEvent(
+                AddBmiDetailEvent.SelectedWeight(
+                    weightPickerAdapter.getSelectedItem().toDouble()
+                )
+            )
+        }
+        if (heightPickerAdapter.differ.currentList.isNotEmpty()) {
+            sharedViewModel.onEvent(
+                AddBmiDetailEvent.SelectedHeight(
+                    weightPickerAdapter.getSelectedItem().toDouble()
+                )
+            )
+        }
 
         binding.weightPicker.apply {
             adapter = weightPickerAdapter

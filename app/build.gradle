@@ -60,4 +60,10 @@ dependencies {
 
     //splash screen api
     implementation "androidx.core:core-splashscreen:$splash_version"
+
+    //admob
+    implementation "com.google.android.gms:play-services-ads:$admob_version"
+    //native ads
+    implementation project(':nativetemplates')
+
 }

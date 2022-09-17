@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/bmiDetails"
-        android:name="com.example.abundanceudo.feature_bmi.presentation.bmi.BmiDetails"
+        android:name="com.example.abundanceudo.feature_bmi.presentation.bmi_detail.BmiDetails"
         android:label="BMI Details"
         tools:layout="@layout/fragment_bmi_details" >
     </fragment>

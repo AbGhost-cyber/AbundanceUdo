@@ -61,11 +61,6 @@ class CommonAdapter(
 
     inner class CommonViewHolder(private val binding: CommonAdapterLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                setSelectedCategoryPos(adapterPosition, it)
-            }
-        }
 
         fun bind(value: String) {
             binding.tvValue.text = value
@@ -87,6 +82,9 @@ class CommonAdapter(
                         )
                     )
                 }
+            }
+            binding.root.setOnClickListener {
+                setSelectedCategoryPos(adapterPosition, it)
             }
         }
     }

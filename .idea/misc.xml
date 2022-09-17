@@ -9,11 +9,15 @@
         <entry key="app/src/main/res/drawable/body_mass.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/body_mass_index.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/border_white.xml" value="0.1185" />
+        <entry key="app/src/main/res/drawable/border_white_radius.xml" value="0.1185" />
         <entry key="app/src/main/res/drawable/text_input_bg.xml" value="0.1345" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/button_layout.xml" value="0.2140625" />
         <entry key="app/src/main/res/layout/common_adapter_layout.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/fragment_add_bmi_details.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_bmi_details.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_bmi_details.xml" value="0.2" />
+        <entry key="app/src/main/res/xml/files_path.xml" value="0.2140625" />
+        <entry key="nativetemplates/src/main/res/layout/gnt_small_template_view.xml" value="0.17685185185185184" />
       </map>
     </option>
   </component>

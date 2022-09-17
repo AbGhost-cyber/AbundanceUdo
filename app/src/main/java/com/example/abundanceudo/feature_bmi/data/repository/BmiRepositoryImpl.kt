@@ -4,7 +4,7 @@ import com.example.abundanceudo.feature_bmi.domain.model.BmiData
 import com.example.abundanceudo.feature_bmi.domain.repository.BmiRepository
 import com.example.abundanceudo.feature_bmi.domain.util.getBmiCategory
 import com.example.abundanceudo.feature_bmi.domain.util.getExtraText
-import com.example.abundanceudo.feature_bmi.domain.util.roundToOneDecimal
+import com.example.abundanceudo.feature_bmi.domain.util.roundToTwoDecimal
 import kotlin.math.pow
 
 class BmiRepositoryImpl : BmiRepository {
@@ -21,9 +21,9 @@ class BmiRepositoryImpl : BmiRepository {
 
         return BmiData(
             name,
-            bmiValue.roundToOneDecimal(),
+            bmiValue.roundToTwoDecimal(),
             bmiCategory,
-            ponderalIndex.roundToOneDecimal(),
+            ponderalIndex.roundToTwoDecimal(),
             bmiCategory.getExtraText()
         )
     }

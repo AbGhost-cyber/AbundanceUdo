@@ -8,4 +8,10 @@
     <string name="gender">Gender</string>
     <string name="body_mass_index">body mass index</string>
     <string name="calculate">Calculate</string>
+    <string name="test_ads_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="test_interstitials">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="test_native_ad">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="share">Share</string>
+    <string name="rate">Rate</string>
+    <string name="play_store_uri">http://play.google.com/store/apps/details?id=</string>
 </resources>
