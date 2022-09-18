@@ -1,15 +1,18 @@
 package com.example.abundanceudo.feature_bmi.presentation.util
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.text.SpannableString
+import android.text.style.AbsoluteSizeSpan
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-fun RecyclerView.scrollLinearOffset(mContext: Context, view: View) {
+fun RecyclerView.scrollLinearOffset(view: View) {
     val itemToScroll = this.getChildAdapterPosition(view)
     val center = this.width / 2 - (view.width / 2)
     this.layoutManager?.let {
@@ -26,15 +29,34 @@ fun AppCompatEditText.onTextChanged(
 }
 
 fun getBitmapFromView(view: View): Bitmap {
-    val spec = View.MeasureSpec.makeMeasureSpec(800, View.MeasureSpec.UNSPECIFIED)
-    view.measure(spec, spec)
-
-    view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-    val bitmap =
-        Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+    val bitmap = Bitmap.createBitmap(
+        view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888
+    )
     val canvas = Canvas(bitmap)
+    val drawable = view.background
+    drawable.draw(canvas)
     view.draw(canvas)
+    // after draw, reset view layout params
+    view.updateLayoutParams {
+        width = ViewGroup.LayoutParams.MATCH_PARENT
+        height = ViewGroup.LayoutParams.WRAP_CONTENT
+    }
+
     return bitmap
+}
+
+fun formatStringSizes(text1: String, text2: String): SpannableString {
+    val spannableStr = SpannableString(text1 + text2)
+    val textToNormalizeIndex = spannableStr.toString().indexOf(text2)
+    spannableStr.setSpan(
+        AbsoluteSizeSpan(
+            40,
+            true
+        ),
+        textToNormalizeIndex,
+        textToNormalizeIndex + text2.length, 0
+    )
+    return spannableStr
 }
 
 val randomRangeData = (10..999).map { it.toString() }

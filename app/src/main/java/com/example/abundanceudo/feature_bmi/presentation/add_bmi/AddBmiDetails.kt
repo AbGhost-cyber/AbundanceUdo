@@ -1,7 +1,6 @@
 package com.example.abundanceudo.feature_bmi.presentation.add_bmi
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.abundanceudo.R
 import com.example.abundanceudo.databinding.FragmentAddBmiDetailsBinding
 import com.example.abundanceudo.feature_bmi.data.repository.AdDismissErrorHandler
 import com.example.abundanceudo.feature_bmi.presentation.shared_viewmodels.AdsViewModel
@@ -31,6 +31,7 @@ class AddBmiDetails : Fragment() {
     private val binding get() = _binding!!
     private val sharedViewModel by activityViewModels<BmiSharedViewModel>()
     private val adsViewModel by activityViewModels<AdsViewModel>()
+    private var isGoToResult = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,8 +49,8 @@ class AddBmiDetails : Fragment() {
         sharedViewModel.event.flowWithLifecycle(lifecycle)
             .onEach {
                 if (it is BmiSharedViewModel.UiEvent.GotoResults) {
-                    Log.d("TAG", "onViewCreated: called ui")
                     showAd()
+                    isGoToResult = true
                 } else if (it is BmiSharedViewModel.UiEvent.ShowSnackBar) {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
@@ -59,7 +60,12 @@ class AddBmiDetails : Fragment() {
         adsViewModel.onEvent(
             BmiAdsEvent.AddFailedOrDismissed(object : AdDismissErrorHandler {
                 override fun onAdDismissOrError() {
-                    findNavController().navigate(AddBmiDetailsDirections.actionAddBmiDetailsToBmiDetails())
+                    // bug fix for illegal state
+                    val destinationIsHome = findNavController()
+                        .currentDestination == findNavController().findDestination(R.id.addBmiDetails)
+                    if (destinationIsHome && isGoToResult) {
+                        findNavController().navigate(AddBmiDetailsDirections.actionAddBmiDetailsToBmiDetails())
+                    }
                 }
             })
         )
@@ -80,16 +86,16 @@ class AddBmiDetails : Fragment() {
         binding.tvName.onTextChanged { sharedViewModel.onEvent(AddBmiDetailEvent.EnteredName(it)) }
 
         val weightPickerAdapter = CommonAdapter { value, view ->
-            binding.weightPicker.scrollLinearOffset(requireContext(), view)
+            binding.weightPicker.scrollLinearOffset(view)
             sharedViewModel.onEvent(AddBmiDetailEvent.SelectedWeight(value.toDouble()))
         }
 
         val heightPickerAdapter = CommonAdapter { value, view ->
-            binding.heightPicker.scrollLinearOffset(requireContext(), view)
+            binding.heightPicker.scrollLinearOffset(view)
             sharedViewModel.onEvent(AddBmiDetailEvent.SelectedHeight(value.toDouble()))
         }
         val genderPickerAdapter = CommonAdapter { _, view ->
-            binding.genderPicker.scrollLinearOffset(requireContext(), view)
+            binding.genderPicker.scrollLinearOffset(view)
         }
         weightPickerAdapter.differ.submitList(randomRangeData)
         heightPickerAdapter.differ.submitList(randomRangeData)

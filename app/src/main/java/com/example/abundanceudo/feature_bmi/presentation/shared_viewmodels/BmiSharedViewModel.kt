@@ -42,7 +42,7 @@ class BmiSharedViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            delay(TimeUnit.MILLISECONDS.toMillis(2))
+            delay(TimeUnit.MILLISECONDS.toMillis(1))
             _isLoading.value = false
         }
     }

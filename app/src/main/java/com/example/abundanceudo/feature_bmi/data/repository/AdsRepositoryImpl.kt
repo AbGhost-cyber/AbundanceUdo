@@ -84,6 +84,7 @@ class AdsRepositoryImpl : AdsRepository {
 
     override fun onNativeAdLoaded(callback: (NativeAd, NativeTemplateStyle) -> Unit) {
         adLoaderBuilder?.let {
+            Log.d(TAG, "onNativeAdLoaded: $nativeActionColor")
             it.forNativeAd { nativeAd ->
                 val style = NativeTemplateStyle.Builder()
                     .withPrimaryTextTypeface(nativePriTextTypeface)

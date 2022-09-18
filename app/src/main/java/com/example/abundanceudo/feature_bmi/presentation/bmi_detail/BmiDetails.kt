@@ -1,13 +1,16 @@
 package com.example.abundanceudo.feature_bmi.presentation.bmi_detail
 
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap.CompressFormat
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -20,12 +23,19 @@ import com.example.abundanceudo.feature_bmi.presentation.MainActivity
 import com.example.abundanceudo.feature_bmi.presentation.shared_viewmodels.AdsViewModel
 import com.example.abundanceudo.feature_bmi.presentation.shared_viewmodels.BmiAdsEvent
 import com.example.abundanceudo.feature_bmi.presentation.shared_viewmodels.BmiSharedViewModel
+import com.example.abundanceudo.feature_bmi.presentation.util.ProgressDialog
+import com.example.abundanceudo.feature_bmi.presentation.util.formatStringSizes
 import com.example.abundanceudo.feature_bmi.presentation.util.getBitmapFromView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class BmiDetails : Fragment() {
@@ -33,6 +43,7 @@ class BmiDetails : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by activityViewModels<BmiSharedViewModel>()
     private val adsViewModel by activityViewModels<AdsViewModel>()
+    private lateinit var progressDialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +64,10 @@ class BmiDetails : Fragment() {
             .flowWithLifecycle(lifecycle)
             .onEach {
                 binding.apply {
-                    tvBmiValue.text = it.bmiValue.toString()
+                    val text1 = it.bmiValue.toString().substringBefore(".")
+                    val text2 = it.bmiValue.toString().substring(text1.length)
+
+                    tvBmiValue.text = formatStringSizes(text1, text2)
                     val nameText =
                         "Hello ${it.userName}, you are ${it.bmiCategory.javaClass.simpleName}"
                     tvNameText.text = nameText
@@ -66,6 +80,7 @@ class BmiDetails : Fragment() {
 
         adsViewModel.onEvent(
             BmiAdsEvent.OnNativeAdLoaded { nativeAd, style ->
+                Log.d("TAG", "onViewCreated: native ad loaded")
                 binding.nativeAdView.apply {
                     setStyles(style)
                     setNativeAd(nativeAd)
@@ -75,6 +90,7 @@ class BmiDetails : Fragment() {
     }
 
     private fun setUpViews() {
+        progressDialog = ProgressDialog.progressDialog(requireContext(), binding.root)
         binding.apply {
             rateLayout.apply {
                 textView.text = getString(R.string.rate)
@@ -94,7 +110,10 @@ class BmiDetails : Fragment() {
                         R.drawable.share
                     )
                 )
-                parent.setOnClickListener { shareBmiData() }
+                parent.setOnClickListener {
+                    progressDialog.show()
+                    saveBmiImageAndShare()
+                }
             }
         }
     }
@@ -119,18 +138,46 @@ class BmiDetails : Fragment() {
         }
     }
 
-    private fun shareBmiData() {
+    private fun saveBmiImageAndShare() {
+        var processIsSucceed = false
+        val processIsCompleted: Boolean
         val bitmap = getBitmapFromView(binding.layoutStats)
-        val cachePath = File(requireActivity().cacheDir.path + File.separator + "My BMI result")
+        val cachePath = File(
+            requireActivity().cacheDir.path +
+                File.separator +
+                "screen_" +
+                System.currentTimeMillis() +
+                ".jpeg"
+        )
+        var outstream: FileOutputStream? = null
         try {
-            cachePath.createNewFile()
-            val outstream = FileOutputStream(cachePath)
+            outstream = FileOutputStream(cachePath)
             bitmap.compress(CompressFormat.JPEG, 100, outstream)
-            outstream.close()
-        } catch (e: Exception) {
+            outstream.flush()
+            processIsSucceed = true
+        } catch (e: FileNotFoundException) {
             e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            outstream?.close()
+            processIsCompleted = true
         }
 
+        // simulate process delay
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(TimeUnit.MILLISECONDS.toMillis(2))
+            if (processIsSucceed && processIsCompleted) {
+                shareBmiImage(cachePath)
+            } else {
+                Toast.makeText(requireContext(), "share failed, please retry", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            progressDialog.dismiss()
+        }
+    }
+
+    private fun shareBmiImage(cachePath: File) {
         val share = Intent(Intent.ACTION_SEND)
         share.type = "image/*"
         val imageUri = FileProvider.getUriForFile(

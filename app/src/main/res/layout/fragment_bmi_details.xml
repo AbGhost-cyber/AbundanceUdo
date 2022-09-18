@@ -14,8 +14,6 @@
         android:layout_margin="@dimen/margin_35"
         android:background="@drawable/app_gradient_border"
         android:orientation="vertical"
-        app:layout_constrainedHeight="true"
-        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_40"
             android:fontFamily="@font/product_sans_bold"
-            android:text="90.61"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_80" />
@@ -60,7 +57,6 @@
             android:ellipsize="end"
             android:fontFamily="@font/product_sans_bold"
             android:maxLines="2"
-            android:text="Hello Olivia, You are normal"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/white"
@@ -74,7 +70,6 @@
             android:ellipsize="end"
             android:fontFamily="@font/product_sans_regular"
             android:maxLines="2"
-            android:text="Normal BMI range: 18.5kg/m2 - 25kg/m2"
             android:textAlignment="center"
             android:textColor="@color/white_80"
             android:textSize="@dimen/min_text_size" />
@@ -87,7 +82,6 @@
             android:ellipsize="end"
             android:fontFamily="@font/product_sans_regular"
             android:maxLines="2"
-            android:text="Ponderal Index: 10.64kg/m3"
             android:textAlignment="center"
             android:textColor="@color/white_80"
             android:textSize="@dimen/min_text_size" />

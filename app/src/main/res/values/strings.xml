@@ -14,4 +14,5 @@
     <string name="share">Share</string>
     <string name="rate">Rate</string>
     <string name="play_store_uri">http://play.google.com/store/apps/details?id=</string>
+    <string name="sharing_your_image">sharing your image</string>
 </resources>
