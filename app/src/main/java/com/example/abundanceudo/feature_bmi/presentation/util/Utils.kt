@@ -28,16 +28,16 @@ fun AppCompatEditText.onTextChanged(
     doAfterTextChanged { action(it.toString()) }
 }
 
-fun getBitmapFromView(view: View): Bitmap {
+fun View.toBitmap(): Bitmap {
     val bitmap = Bitmap.createBitmap(
-        view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888
+        measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888
     )
     val canvas = Canvas(bitmap)
-    val drawable = view.background
+    val drawable = background
     drawable.draw(canvas)
-    view.draw(canvas)
+    draw(canvas)
     // after draw, reset view layout params
-    view.updateLayoutParams {
+    updateLayoutParams {
         width = ViewGroup.LayoutParams.MATCH_PARENT
         height = ViewGroup.LayoutParams.WRAP_CONTENT
     }

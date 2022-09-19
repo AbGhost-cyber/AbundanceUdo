@@ -63,6 +63,7 @@ class AddBmiDetails : Fragment() {
                     // bug fix for illegal state
                     val destinationIsHome = findNavController()
                         .currentDestination == findNavController().findDestination(R.id.addBmiDetails)
+                    // isGoToResult helps prevent ad flickering
                     if (destinationIsHome && isGoToResult) {
                         findNavController().navigate(AddBmiDetailsDirections.actionAddBmiDetailsToBmiDetails())
                     }
