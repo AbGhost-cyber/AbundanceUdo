@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/addBmiDetails"
-        android:name="com.example.abundanceudo.feature_bmi.presentation.add_bmi.AddBmiDetails"
+        android:name="com.example.abundanceudo.featureBmi.presentation.addBmi.AddBmiDetails"
         android:label="Add BMI Details"
         tools:layout="@layout/fragment_add_bmi_details" >
         <action
@@ -16,8 +16,11 @@
     </fragment>
     <fragment
         android:id="@+id/bmiDetails"
-        android:name="com.example.abundanceudo.feature_bmi.presentation.bmi_detail.BmiDetails"
+        android:name="com.example.abundanceudo.featureBmi.presentation.bmiDetail.BmiDetails"
         android:label="BMI Details"
         tools:layout="@layout/fragment_bmi_details" >
+        <argument
+            android:name="BmiResult"
+            app:argType="com.example.abundanceudo.featureBmi.domain.model.BmiData" />
     </fragment>
 </navigation>

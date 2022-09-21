@@ -14,4 +14,9 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="toolBarTextAppearance">
+        <item name="android:textSize">@dimen/toolBarTextSize</item>
+        <item name="android:fontFamily">@font/product_sans_regular</item>
+    </style>
 </resources>

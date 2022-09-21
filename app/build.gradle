@@ -67,4 +67,8 @@ dependencies {
     //native ads
     implementation project(':nativetemplates')
 
+    //coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+
+
 }

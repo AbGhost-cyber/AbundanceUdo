@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".feature_bmi.presentation.bmi_detail.BmiDetails">
+    tools:context=".featureBmi.presentation.bmiDetail.BmiDetails">
 
     <LinearLayout
         android:id="@+id/layoutStats"
@@ -42,12 +42,13 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_80" />
 
-        <View
-            android:layout_width="wrap_content"
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
             android:layout_height="@dimen/dp_2"
+            app:dividerColor="@color/white"
+            app:dividerThickness="@dimen/dp_2"
             android:layout_marginStart="@dimen/dp_40"
-            android:layout_marginEnd="@dimen/dp_40"
-            android:background="@color/white" />
+            android:layout_marginEnd="@dimen/dp_40" />
 
         <TextView
             android:id="@+id/tvNameText"

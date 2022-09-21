@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".feature_bmi.presentation.add_bmi.AddBmiDetails">
+    tools:context=".featureBmi.presentation.addBmi.AddBmiDetails">
 
     <TextView
         android:id="@+id/textView"
